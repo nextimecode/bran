@@ -1,9 +1,8 @@
-import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestFactory } from '@nestjs/core'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
-import { AppModule } from './app.module';
-
-import * as packageJson from '../../package.json';
+import * as packageJson from '../../package.json'
+import { AppModule } from './app.module'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -12,13 +11,13 @@ async function bootstrap() {
     .setTitle('Bran')
     .setDescription('API para o projeto Stark')
     .setVersion(packageJson.version)
-    .build();
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+    .build()
+  const documentFactory = () => SwaggerModule.createDocument(app, config)
+  SwaggerModule.setup('api', app, documentFactory)
 
   // const configService = app.get(EnvService)
   // const port = configService.get('PORT')
 
-  await app.listen(process.env.PORT ?? 3333);
+  await app.listen(process.env.PORT ?? 3333)
 }
 bootstrap()

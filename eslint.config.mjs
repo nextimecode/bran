@@ -7,6 +7,7 @@ import perfectionistPlugin from 'eslint-plugin-perfectionist'
 import prettierPlugin from 'eslint-plugin-prettier'
 import reactPlugin from 'eslint-plugin-react'
 import unicornPlugin from 'eslint-plugin-unicorn'
+import vitestPlugin from 'eslint-plugin-vitest'
 import globals from 'globals'
 
 export default [
@@ -25,7 +26,8 @@ export default [
         ...globals.browser,
         ...globals.es6,
         ...globals.node,
-        process: 'readonly'
+        ...vitestPlugin.environments.env.globals,
+        process: 'readonly',
       }
     },
     plugins: {
@@ -36,7 +38,8 @@ export default [
       unicorn: unicornPlugin,
       'import-helpers': importHelpersPlugin,
       perfectionist: perfectionistPlugin,
-      next: nextPlugin
+      next: nextPlugin,
+      vitest: vitestPlugin
     },
     ignores: [
       'node_modules/',

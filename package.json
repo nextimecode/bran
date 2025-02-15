@@ -14,7 +14,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "nest start --watch",
-    "clean": "rm -rf .turbo .next .vercel dist node_modules pnpm-lock.yaml playwright-report test-results",
+    "clean:all": "rm -rf .turbo .next .vercel dist node_modules data-docker pnpm-lock.yaml playwright-report test-results && pnpm install && pnpm build",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -25,7 +25,8 @@
     "e2e": "vitest run --config ./vitest.config.e2e.ts",
     "e2e:watch": "vitest --config ./vitest.config.e2e.ts",
     "precommit": "turbo lint",
-    "prepush": "pnpm prisma generate && pnpm typecheck"
+    "prepush": "pnpm prisma generate && pnpm typecheck",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.749.0",

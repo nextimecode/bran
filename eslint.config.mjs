@@ -1,3 +1,4 @@
+import nextPlugin from '@next/eslint-plugin-next'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
 import importHelpersPlugin from 'eslint-plugin-import-helpers'
@@ -6,18 +7,10 @@ import perfectionistPlugin from 'eslint-plugin-perfectionist'
 import prettierPlugin from 'eslint-plugin-prettier'
 import reactPlugin from 'eslint-plugin-react'
 import unicornPlugin from 'eslint-plugin-unicorn'
+import vitestPlugin from 'eslint-plugin-vitest'
 import globals from 'globals'
 
 export default [
-  {
-    // TODO: resolver lint para testes depois
-    ignores: [
-      '**/*.spec.{js,ts,jsx,tsx}',
-      '**/*.spec.ts',
-      '**/*.e2e-spec.ts',
-      '**/setup-e2e.ts'
-    ]
-  },
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
@@ -33,8 +26,8 @@ export default [
         ...globals.browser,
         ...globals.es6,
         ...globals.node,
+        ...vitestPlugin.environments.env.globals,
         process: 'readonly',
-        Express: 'readonly'
       }
     },
     plugins: {
@@ -44,8 +37,19 @@ export default [
       prettier: prettierPlugin,
       unicorn: unicornPlugin,
       'import-helpers': importHelpersPlugin,
-      perfectionist: perfectionistPlugin
+      perfectionist: perfectionistPlugin,
+      next: nextPlugin,
+      vitest: vitestPlugin
     },
+    ignores: [
+      'node_modules/',
+      'dist/',
+      'build/',
+      '.next/',
+      '.turbo/',
+      '.vercel/',
+      'playwright-report/'
+    ],
     rules: {
       'space-before-blocks': 'error',
       'keyword-spacing': 'error',
@@ -60,11 +64,6 @@ export default [
       ],
       'no-undef': 'error',
       'comma-dangle': 'off',
-      quotes: [
-        'error',
-        'single',
-        { avoidEscape: true, allowTemplateLiterals: true }
-      ], // Aspas simples
       'import-helpers/order-imports': [
         'error',
         {
@@ -136,6 +135,11 @@ export default [
       },
       'import/parsers': {
         '@typescript-eslint/parser': ['.ts', '.tsx', '.d.ts']
+      },
+      'import/resolver': {
+        typescript: {
+          project: './tsconfig.json'
+        }
       }
     }
   }

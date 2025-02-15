@@ -1,0 +1,124 @@
+# dependencies
+node_modules/
+.pnpm-store/
+.turbo/
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# panda css
+styled-system
+styled-system/
+
+# testing
+**/coverage
+**/test-results/
+**/playwright-report/
+**/blob-report/
+**/playwright/.cache/
+coverage
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+.playwright/
+
+# next.js
+.next/
+out/
+/.next/
+/out/
+
+# production
+/build
+
+# build output (generalized)
+**/dist
+**/storybook-static
+dist/
+dist
+dist-ssr
+
+# misc
+.DS_Store
+*.pem
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# debug for pnpm
+logs
+*.log
+.pnpm-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env
+.env.local
+.env.development
+.env.preview
+.env.staging
+.env.homolog
+.env.production
+.env.test
+**/.env
+
+# temp files
+*.pem
+*~
+*.swp
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+
+# compiled output
+/dist
+/node_modules
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS
+.DS_Store
+
+# Tests
+/coverage
+/.nyc_output
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Docker
+docker-data
+.vercel
+data-docker

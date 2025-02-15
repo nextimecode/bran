@@ -1,0 +1,73 @@
+name: release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Prepare
+        id: prepare
+        uses: ./.github/actions/prepare
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.prepare.outputs.node_version }}
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm@${{ steps.prepare.outputs.pnpm_version }}
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Stark Release
+        id: stark_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
+
+      - name: Get Latest Tag
+        id: get_tag
+        run: |
+          TAG=$(git describe --tags --abbrev=0)
+          TAG_NO_V=${TAG#v}
+          echo "::set-output name=tag::$TAG_NO_V"
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Update package.json with release tag
+        run: |
+          echo "Atualizando package.json com a versão ${{ steps.get_tag.outputs.tag }}"
+          jq ".version = \"${{ steps.get_tag.outputs.tag }}\"" package.json > package.tmp.json
+          mv package.tmp.json package.json
+
+      - name: Create Pull Request for Version Update
+        id: create_pr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: 'chore: atualiza versão para ${{ steps.get_tag.outputs.tag }}'
+          branch: 'update-version/${{ steps.get_tag.outputs.tag }}'
+          title: 'chore: atualiza versão para ${{ steps.get_tag.outputs.tag }}'
+          body: |
+            Atualização automática do arquivo `package.json` para a versão `${{ steps.get_tag.outputs.tag }}`.
+            Aprovação necessária para mesclar as mudanças na branch `main`.
+          labels: version-update
+
+      - name: Merge Pull Request
+        run: gh pr merge ${{ steps.create_pr.outputs.pull-request-number }} --squash --auto
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

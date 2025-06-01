@@ -1,9 +1,11 @@
 module.exports = {
-  tabWidth: 2,
-  semi: false,
+  semi: true,
   singleQuote: true,
-  arrowParens: 'avoid',
-  trailingComma: 'none',
-  endOfLine: 'auto',
-  printWidth: 80
+  tabWidth: 2,
+  trailingComma: 'es5',
+  printWidth: 80,
+  useTabs: false,
+  quoteProps: 'as-needed',
+  arrowParens: 'always',
+  endOfLine: 'lf'
 }
